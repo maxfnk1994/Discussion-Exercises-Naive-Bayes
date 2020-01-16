@@ -102,7 +102,88 @@ naiveBayesB <- function(train, test){
   return(Accuracy)
 }
 
+#---------------------------------------------------------------------------------------------------------------------------------------
+# Use iris, diamonds, and mtcars for testing of sig. difference between the two functions
+#---------------------------------------------------------------------------------------------------------------------------------------
 
+# Iris
+#---------------------------------------------------------------------------------------------------------------------------------------
+
+# Load dataframe
+iris <- data.frame(iris)
+
+# Define Species as first column
+iris <- iris %>%
+  select(Species, everything())
+
+# Create train and test data for iris
+train_test(iris)
+
+# Import iris in function A
+acc_iris_A <- naiveBayesA(train, test)
+# Safe results
+resultsA_iris <- resultsA
+
+# Import iris in function B
+acc_iris_B <- naiveBayesB(train, test)
+# Safe results
+resultsB_iris <- resultsB
+
+# Diamonds
+#---------------------------------------------------------------------------------------------------------------------------------------
+
+# Load dataframe
+diamonds <- data.frame(diamonds)
+
+# Define cut as first column
+diamonds <- diamonds %>%
+  select(cut, everything())
+
+# Create train and test data for diamonds
+train_test(diamonds)
+
+# Import diamonds in function A
+acc_diamonds_A <- naiveBayesA(train, test)
+# Safe results
+resultsA_diamonds <- resultsA
+
+# Import diamonds in function B
+acc_diamonds_B <- naiveBayesB(train, test)
+# Safe results
+resultsB_diamonds <- resultsB
+
+
+# Mtcars
+#---------------------------------------------------------------------------------------------------------------------------------------
+
+# Load dataframe
+mtcars <- data.frame(mtcars)
+
+# Classify a car's MPG as Excellent, Good, Fair, or Poor
+first_qu <- summary(mtcars$mpg)[2]
+Median <- summary(mtcars$mpg)[3]
+third_qu <- summary(mtcars$mpg)[5]
+mtcars$mpg <- if_else(mtcars$mpg < first_qu, "Poor",
+                      if_else(mtcars$mpg < Median, "Fair",
+                              if_else(mtcars$mpg < third_qu, "Good",
+                                      if_else(mtcars$mpg >= first_qu, "Excellent","NA"))))
+# Safe as factor
+mtcars_factor <- factor(mtcars$mpg, ordered = TRUE,
+                        levels = c("Poor", "Fair", "Good", "Excellent"))
+mtcars$mpg <- mtcars_factor
+
+# Create train and test data for mtcars
+train_test(mtcars)
+
+# Import mtcars in function A
+acc_mtcars_A <- naiveBayesA(train, test)
+# Safe results
+resultsA_mtcars <- resultsA
+
+# Import mtcars in function B
+acc_mtcars_B <- naiveBayesB(train, test)
+# Safe results
+resultsB_mtcars <- resultsB
 
 
 
