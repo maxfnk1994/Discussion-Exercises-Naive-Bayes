@@ -185,5 +185,21 @@ acc_mtcars_B <- naiveBayesB(train, test)
 # Safe results
 resultsB_mtcars <- resultsB
 
+# Significant Difference
+#---------------------------------------------------------------------------------------------------------------------------------------
+
+# Bind the results for A and for B
+results_for_A <- rbind(resultsA_diamonds, resultsA_iris, resultsA_mtcars)
+results_for_B <- rbind(resultsB_diamonds, resultsB_iris, resultsB_mtcars)
+
+# Preparation for sig. difference test
+acc_comparison_A <- data.frame(Accuracy = if_else(results_for_A$Actual == results_for_A$Prediction, 1, 0), Method = "A")
+acc_comparison_B <- data.frame(Accuracy = if_else(results_for_B$Actual == results_for_B$Prediction, 1, 0), Method = "B")
+
+# Result dataframe
+results_complete <- rbind(acc_comparison_A, acc_comparison_B)
+
+# Test for sig. difference
+wilcox.test(Accuracy ~ Method, data = results_complete)
 
 
