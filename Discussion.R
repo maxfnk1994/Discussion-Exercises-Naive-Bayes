@@ -47,3 +47,62 @@ train_test <- function(x){
   # safe test dataset
   assign(test,x[sample_test,],envir = .GlobalEnv)
 }
+
+#---------------------------------------------------------------------------------------------------------------------------------------
+# Naive Bayes function with e1071
+#---------------------------------------------------------------------------------------------------------------------------------------
+
+naiveBayesA <- function(train, test){
+  # Save the name of the first column of train input
+  first_column <- colnames(train[1])
+  # Rename the first column as "dummy"
+  names(train)[names(train) == first_column] <- "dummy"
+  names(test)[names(test) == first_column] <- "dummy"
+  # Train the model to classify on the first column of input train set
+  nb_model <- naiveBayes(dummy ~ ., data = train)
+  # Prediction
+  pred_test_nb <- predict(nb_model, newdata = test, type = "class")
+  # Confusion matrix with caret library
+  confusion_matrix <- confusionMatrix(test$dummy, pred_test_nb, positive = "spam")
+  # Results
+  resultsA <- data.frame(Actual = test$dummy,
+                         Prediction = pred_test_nb)
+  # safe results
+  assign("resultsA",resultsA,envir = .GlobalEnv)
+  # Accuarcy
+  Accuracy <- confusion_matrix$overall[1]
+  # Return
+  return(Accuracy)
+}
+
+#---------------------------------------------------------------------------------------------------------------------------------------
+# Naive Bayes function with e1071
+#---------------------------------------------------------------------------------------------------------------------------------------
+
+naiveBayesB <- function(train, test){
+  # Save the name of the first column of train input
+  first_column <- colnames(train[1])
+  # Rename the first column as "dummy"
+  names(train)[names(train) == first_column] <- "dummy"
+  names(test)[names(test) == first_column] <- "dummy"
+  # Train the model to classify on the first column of input train set
+  nb_model <- naive_bayes(dummy ~ ., data = train)
+  # Prediction
+  pred_test_nb <- predict(nb_model, newdata = test, type = "class")
+  # Confusion matrix with caret library
+  confusion_matrix <- confusionMatrix(test$dummy, pred_test_nb, positive = "spam")
+  # Results
+  resultsB <- data.frame(Actual = test$dummy,
+                         Prediction = pred_test_nb)
+  # safe results
+  assign("resultsB",resultsB,envir = .GlobalEnv)
+  # Accuarcy
+  Accuracy <- confusion_matrix$overall[1]
+  # Return
+  return(Accuracy)
+}
+
+
+
+
+
