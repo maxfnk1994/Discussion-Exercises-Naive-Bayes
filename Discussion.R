@@ -31,7 +31,7 @@ library(naivebayes)
 # Function to split into train and test with a share of 0.75
 train_test <- function(x){
   # Set the random seed for repeatability
-  set.seed(123)
+  # set.seed(123)
   # Define size of share
   train_share <- 0.75
   # Splitting into training and test data set
