@@ -13,7 +13,10 @@
 rm(list = ls())
 
 # --- Install packages ---
-# install.packages()
+# install.packages("e1071")
+# install.packages("tidyverse")
+# install.packages("caret")
+# install.packages("naivebayes")
 
 # --- Load packages ---
 library(e1071)
@@ -76,7 +79,7 @@ naiveBayesA <- function(train, test){
 }
 
 #---------------------------------------------------------------------------------------------------------------------------------------
-# Naive Bayes function with e1071
+# Naive Bayes function with naivebayes
 #---------------------------------------------------------------------------------------------------------------------------------------
 
 naiveBayesB <- function(train, test){
@@ -103,7 +106,7 @@ naiveBayesB <- function(train, test){
 }
 
 #---------------------------------------------------------------------------------------------------------------------------------------
-# Use iris, diamonds, and mtcars for testing of sig. difference between the two functions
+# Use iris, diamonds, and mtcars for testing sig. difference between the two functions
 #---------------------------------------------------------------------------------------------------------------------------------------
 
 # Iris
@@ -160,6 +163,9 @@ resultsB_diamonds <- resultsB
 mtcars <- data.frame(mtcars)
 
 # Classify a car's MPG as Excellent, Good, Fair, or Poor
+
+# Approach: We have 4 categories. The data is not normally distributed, so the Median is a good choice to split the data into two parts
+#           To split the data in 4 categories, the IQR can help:
 first_qu <- summary(mtcars$mpg)[2]
 Median <- summary(mtcars$mpg)[3]
 third_qu <- summary(mtcars$mpg)[5]
@@ -200,6 +206,7 @@ acc_comparison_B <- data.frame(Accuracy = if_else(results_for_B$Actual == result
 results_complete <- rbind(acc_comparison_A, acc_comparison_B)
 
 # Test for sig. difference
-wilcox.test(Accuracy ~ Method, data = results_complete)
+sig_difference <- wilcox.test(Accuracy ~ Method, data = results_complete)
+print(sig_difference)
 
 
